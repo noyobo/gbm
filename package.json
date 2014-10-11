@@ -2,7 +2,15 @@
   "name": "gbm",
   "version": "1.0.0",
   "description": "Git branch manage quick new a branch when package.json version daily/x.y.z",
-  "main": "index.js",
+  "bin": {
+    "gbm": "gbm.js"
+  },
+  "preferGlobal": true,
+  "engines": {
+    "node": ">=0.10.0",
+    "npm": ">=1.4.3"
+  },
+  "engineStrict": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,5 +26,11 @@
   "bugs": {
     "url": "https://github.com/noyobo/gbm/issues"
   },
-  "homepage": "https://github.com/noyobo/gbm"
+  "homepage": "https://github.com/noyobo/gbm",
+  "dependencies": {
+    "colors": "^1.0.3",
+    "commander": "^2.3.0",
+    "dateformat": "^1.0.8",
+    "shelljs": "^0.3.0"
+  }
 }
