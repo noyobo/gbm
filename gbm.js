@@ -24,9 +24,10 @@ program
 program.on('--help', function() {
   help.show();
 })
+
 program.parse(process.argv)
 
-logger.log(program)
+logger.log(program.major)
 
 if (!program.args.length && !program.major) {
   program.help()
