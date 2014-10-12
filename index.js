@@ -53,7 +53,7 @@ gbm.ver = function(release) {
     logger.info('当前 package.version 已为', release.green)
     process.exit(1)
   }
-  check.equi()
+  if(branchName !== 'master') check.equi()
   if (/\b(major|minor|patch)\b/.test(release)) {
     check.checkVersion()
     pkg.version = ver.inc(pkg.version, release)
