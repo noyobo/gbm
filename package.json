@@ -1,10 +1,14 @@
 {
   "name": "gbm",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Git branch manage quick new a branch when package.json version daily/x.y.z",
   "bin": {
-    "gbm": "gbm.js"
+    "gbm": "cli.js"
   },
+  "files": [
+    "cli.js"
+  ],
+  "main": "index.js",
   "preferGlobal": true,
   "engines": {
     "node": ">=0.10.0",
@@ -31,7 +35,8 @@
     "colors": "^1.0.3",
     "commander": "^2.3.0",
     "dateformat": "^1.0.8",
-    "lodash.indexof": "^2.4.1",
-    "shelljs": "^0.3.0"
+    "semver": "^4.0.3",
+    "shelljs": "^0.3.0",
+    "yesno": "0.0.1"
   }
 }
