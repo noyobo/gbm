@@ -29,7 +29,7 @@ var commands = {
   switch: 'git checkout $message',
   tag: 'git tag publish/$message',
   nowbranch: 'git rev-parse --abbrev-ref HEAD',
-  prepub: 'git push origin daily/$message:daily/$message',
+  prepub: 'git push origin $message:$message',
   publish: 'git push origin publish/$message:publish/$message'
 }
 
@@ -75,9 +75,9 @@ gbm.ver = function(release) {
 // 推送分支
 gbm.prepub = function() {
   check.checkVersion()
-
-  logger.info('当前推送分支', gitBranch.name().green)
-  shjs.exec(commands.prepub.msg(gitBranch.version()) + '&&' + commands.status, {
+  logger.info('当前推送分支', branchName.green)
+  var n = branchName === 'master'? branchName : 'daily/' + branchNameVer
+  shjs.exec(commands.prepub.msg(n) + '&&' + commands.status, {
     silent: false,
     async: true
       /*jshint unused:false*/
