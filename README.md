@@ -22,16 +22,16 @@ $ npm install -g gbm
 
   Commands:
 
-    new [x.y.z|options]
+    new|n [x.y.z|options]
        创建新分支
     
-    ver [x.y.z|options]
+    version|v [x.y.z|options]
        更新当前版本号 adn commit
     
-    commit <message>
+    commit|c <message>
        添加所有变更文件 and commit
     
-    switch <x.y.z>
+    switch|s <x.y.z>
        切换分支到 daily/x.y.z
     
     prepub 
@@ -43,8 +43,8 @@ $ npm install -g gbm
     sync 
        同步当前版本号
     
-    check 
-       检验当前文件配置
+    now 
+       显示当前文件配置信息
     
 
   Options:
