@@ -26,10 +26,10 @@ var commands = {
   createBranch: 'git checkout -b daily/$message',
   commit: 'git commit -m "$message"',
   status: 'git status',
-  switch: 'git checkout daily/$message',
+  switch: 'git checkout $message',
   tag: 'git tag publish/$message',
   nowbranch: 'git rev-parse --abbrev-ref HEAD',
-  prepub: 'git push origin ' + branchName + ':' + branchName,
+  prepub: 'git push origin daily/$message:daily/$message',
   publish: 'git push origin publish/$message:publish/$message'
 }
 
@@ -53,6 +53,7 @@ gbm.ver = function(release) {
     logger.info('当前 package.version 已为', release.green)
     process.exit(1)
   }
+  check.equi()
   if (/\b(major|minor|patch)\b/.test(release)) {
     check.checkVersion()
     pkg.version = ver.inc(pkg.version, release)
@@ -62,25 +63,27 @@ gbm.ver = function(release) {
     pkg.version = release
   }
   fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2))
-  logger.info('package.version 更新到', pkg.version.green)
   shjs.exec(commands.addpkg + '&&' + commands.commit.msg('v' + pkg.version), {
-    silent: true,
+    silent: false,
     async: true
-  }).stdout.on('data', function(data) {
-    logger.log(data)
+  }, function(code, output) {
+    if (code === 0 ) {
+      logger.info('package.version 更新到', pkg.version.green)
+    }
   })
 };
 // 推送分支
 gbm.prepub = function() {
   check.checkVersion()
-  logger.info('当前推送分支', branchName.green)
-  shjs.exec(commands.prepub + '&&' + commands.status, {
-    silent: true,
+
+  logger.info('当前推送分支', gitBranch.name().green)
+  shjs.exec(commands.prepub.msg(gitBranch.version()) + '&&' + commands.status, {
+    silent: false,
     async: true
-    /*jshint unused:false*/
+      /*jshint unused:false*/
   }, function(code, output) {
     if (code !== 0) {
-      return logger.error(output);
+      logger.error('推送失败');
     }
   }).stdout.on('data', function(data) {
     if (nothingReg.test(data)) {
@@ -93,10 +96,12 @@ gbm.prepub = function() {
 gbm.publish = function() {
   check.checkVersion()
   var a = gitBranch.version()
+  console.log(a)
+  return false
   shjs.exec(commands.tag.msg(a) + '&&' + commands.publish.msg(a), {
     silent: false,
     async: true
-    /*jshint unused:false*/
+      /*jshint unused:false*/
   }, function(code, output) {
     if (code === 0) {
       logger.info('发布完成')
@@ -105,14 +110,19 @@ gbm.publish = function() {
     }
   })
 }
-gbm.commit = function(message){
+gbm.commit = function(message) {
   check.checkVersion()
   message = message.replace(/[-_]+/g, ' ')
   shjs.exec(commands.add + '&&' + commands.commit.msg(message))
 }
-gbm.switch = function(val){
-  check.lint(val)
-  shjs.exec(commands.switch.msg(val))
+gbm.switch = function(val) {
+  if (val === 'master') {
+    shjs.exec(commands.switch.msg(val))
+    process.exit()
+  };
+  if (check.lint(val)) {
+    shjs.exec(commands.switch.msg('daily/' + val))
+  };
 }
 gbm.check = function() {
   check.checkVersion()
@@ -127,7 +137,7 @@ gbm._createBranch = function(version) {
   shjs.exec(commands.createBranch.msg(version), {
     silent: false,
     async: true
-    /*jshint unused:false*/
+      /*jshint unused:false*/
   }, function(code, output) {
     if (code === 0) {
       gbm.sync()
