@@ -66,6 +66,7 @@ gbm.ver = function(release) {
   shjs.exec(commands.addpkg + '&&' + commands.commit.msg('v' + pkg.version), {
     silent: false,
     async: true
+    /*jshint unused:false*/
   }, function(code, output) {
     if (code === 0 ) {
       logger.info('package.version 更新到', pkg.version.green)
@@ -111,7 +112,7 @@ gbm.publish = function() {
   })
 }
 gbm.commit = function(message) {
-  check.checkVersion()
+  if(branchName !== 'master')check.checkVersion()
   message = message.replace(/[-_]+/g, ' ')
   shjs.exec(commands.add + '&&' + commands.commit.msg(message))
 }
@@ -119,10 +120,10 @@ gbm.switch = function(val) {
   if (val === 'master') {
     shjs.exec(commands.switch.msg(val))
     process.exit()
-  };
+  }
   if (check.lint(val)) {
     shjs.exec(commands.switch.msg('daily/' + val))
-  };
+  }
 }
 gbm.check = function() {
   check.checkVersion()
