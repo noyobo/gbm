@@ -23,24 +23,28 @@ program
 
 program
   .command('new [x.y.z|options]')
+  .alias('n')
   .description('创建新分支')
   .action(function(val) {
     gbm.new(val, getType())
   })
 program
-  .command('ver [x.y.z|options]')
+  .command('version [x.y.z|options]')
+  .alias('v')
   .description('更新当前版本号 adn commit')
   .action(function(val) {
     gbm.ver(val || getType())
   })
 program
   .command('commit <message>')
+  .alias('c')
   .description('添加所有变更文件 and commit')
   .action(function(val) {
     gbm.commit(val)
   })
 program
   .command('switch <x.y.z>')
+  .alias('s')
   .description('切换分支到 daily/x.y.z')
   .action(function(val) {
     gbm.switch(val)
