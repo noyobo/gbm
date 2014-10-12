@@ -20,12 +20,13 @@ String.prototype.msg = function(msg) {
 var nothingReg = /nothing to commit/gm;
 
 var commands = {
-  add: 'git add .',
+  add: 'git add -A',
   addpkg: 'git add package.json',
   branch: 'git branch',
   createBranch: 'git checkout -b daily/$message',
   commit: 'git commit -m "$message"',
   status: 'git status',
+  switch: 'git checkout daily/$message',
   tag: 'git tag publish/$message',
   nowbranch: 'git rev-parse --abbrev-ref HEAD',
   prepub: 'git push origin ' + branchName + ':' + branchName,
@@ -103,6 +104,15 @@ gbm.publish = function() {
       logger.error('发布失败...')
     }
   })
+}
+gbm.commit = function(message){
+  check.checkVersion()
+  message = message.replace(/[-_]+/g, ' ')
+  shjs.exec(commands.add + '&&' + commands.commit.msg(message))
+}
+gbm.switch = function(val){
+  check.lint(val)
+  shjs.exec(commands.switch.msg(val))
 }
 gbm.check = function() {
   check.checkVersion()

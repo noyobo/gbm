@@ -26,7 +26,13 @@ $ npm install -g gbm
        创建新分支
     
     ver [x.y.z|options]
-       更新当前版本号 并 commit
+       更新当前版本号 adn commit
+    
+    commit <message>
+       添加所有变更文件 and commit
+    
+    switch <x.y.z>
+       切换分支到 daily/x.y.z
     
     prepub 
        推送当前分支到远端

@@ -20,6 +20,7 @@ program
   .option('-x, --major', '主版本号增加')
   .option('-y, --minor', '次版本号增加 default')
   .option('-z, --patch', '补丁版本号增加')
+
 program
   .command('new [x.y.z|options]')
   .description('创建新分支')
@@ -28,11 +29,22 @@ program
   })
 program
   .command('ver [x.y.z|options]')
-  .description('更新当前版本号 并 commit')
+  .description('更新当前版本号 adn commit')
   .action(function(val) {
     gbm.ver(val || getType())
   })
-
+program
+  .command('commit <message>')
+  .description('添加所有变更文件 and commit')
+  .action(function(val) {
+    gbm.commit(val)
+  })
+program
+  .command('switch <x.y.z>')
+  .description('切换分支到 daily/x.y.z')
+  .action(function(val) {
+    gbm.switch(val)
+  })
 program
   .command('prepub')
   .description('推送当前分支到远端')
