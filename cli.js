@@ -69,8 +69,8 @@ program
     gbm.sync()
   })
 program
-  .command('check')
-  .description('检验当前文件配置')
+  .command('now')
+  .description('显示当前文件配置信息')
   .action(function() {
     gbm.check()
   })

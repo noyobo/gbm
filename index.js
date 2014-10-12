@@ -126,7 +126,7 @@ gbm.switch = function(val) {
 }
 gbm.check = function() {
   check.checkVersion()
-  logger.info('Good joy ^_^'.yellow)
+  logger.info('now package.version:', pkg.version.green)
 }
 gbm.sync = function() {
   check.name()
