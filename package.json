@@ -1,6 +1,6 @@
 {
   "name": "gbm",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Git branch manage quick new a branch when package.json version daily/x.y.z",
   "bin": {
     "gbm": "cli.js"
