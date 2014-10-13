@@ -34,7 +34,7 @@ var commands = {
 }
 
 gbm.new = function(version, release) {
-  if (!check.isBranch()) {return false}
+  if (!check.isBranch()) {process.exit(1)}
   if (branchName === 'master') {
     if (typeof version === 'undefined') {
       this._createBranch(ver.inc(pkg.version, release))
@@ -53,37 +53,34 @@ gbm.new = function(version, release) {
     }
   }
 }
-  // 更新版本号 并 commit
-gbm.ver = function(version) {
+gbm.bump = function(type){
+  if (!check.isVersion(pkg.version)) {
+    logger.warn('当前 package.json version 不符合', 'x.y.z'.green)
+    process.exit(1)
+  }
+  var v = ver.inc(pkg.version, type)
+  this._writePackage(v)
+}
+// 更新版本号 并 commit
+gbm.parser = function(val) {
   var flag = false
-  if (!check.isBranch()) {return false}
-  if (!check.isVer(version)) {return false}
-  if (version === pkg.version) {
-    logger.info('当前 package.version 已为', version.green)
+  if (!check.isBranch()) {process.exit(1)}
+  if (!check.isVer(val)) {process.exit(1)}
+  if (val === pkg.version) {
+    logger.info('当前 package.version 已为', val.green)
     process.exit(1)
   }
   if (branchName === 'master') {
-    if (check.gt(version)) {
-      pkg.version = version
+    if (check.gt(val)) {
       flag = true
     }
   }else{
-    if (!check.equi(version) && check.gt(version)) {
-      pkg.version = version
+    if (!check.equi(val) && check.gt(val)) {
       flag = true
     }
   }
   if (!flag) {process.exit(1)}
-  fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2))
-  shjs.exec(commands.addpkg + '&&' + commands.commit.msg('v' + pkg.version), {
-    silent: false,
-    async: true
-      /*jshint unused:false*/
-  }, function(code, output) {
-    if (code === 0) {
-      logger.info('package.version 更新到', pkg.version.green)
-    }
-  })
+  this._writeVersion(val)
 }
 // 推送分支
 gbm.prepub = function() {
@@ -108,7 +105,10 @@ gbm.prepub = function() {
   })
 }
 gbm.publish = function() {
-  if (check.isMaster()) {process.exit(1)}
+  if (check.isMaster()) {
+    logger.warn('当前分支为','master'.green, '禁止 publish')
+    process.exit(1)
+  }
   if (!check.isBranch()) {process.exit(1)}
   if (!check.version) {process.exit(1)}
   var a = gitBranch.version()
@@ -159,4 +159,28 @@ gbm._createBranch = function(version) {
       gbm.sync()
     }
   })
+}
+gbm._writeVersion = function(val){
+  pkg.version = val
+  fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2))
+  shjs.exec(commands.addpkg + '&&' + commands.commit.msg('v' + pkg.version), {
+    silent: false,
+    async: true
+      /*jshint unused:false*/
+  }, function(code, output) {
+    if (code === 0) {
+      logger.info('package.version 更新到', pkg.version.green)
+    }
+  })
+}
+gbm._writePackage = function(val) {
+  var old = pkg.version;
+  pkg.version = val
+  fs.writeFile(pkgPath, JSON.stringify(pkg, null, 2), function(err) {
+    if(err){
+      logger.error('could not increase version: ' + pkg.version)
+    }
+    logger.info('package.version', old.yellow ,'=>', val.green)
+    logger.tips('package.json 已更新','需自行 commit')
+  });
 }

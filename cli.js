@@ -29,11 +29,18 @@ program
     gbm.new(val, getType())
   })
 program
-  .command('version <x.y.z>')
-  .alias('v')
+  .command('bump [options]')
+  .alias('b')
+  .description('增加当前版本号')
+  .action(function(val) {
+    gbm.bump(getType())
+  })
+program
+  .command('parser <x.y.z>')
+  .alias('p')
   .description('更新当前版本号 adn commit')
   .action(function(val) {
-    gbm.ver(val || getType())
+    gbm.parser(val || getType())
   })
 program
   .command('commit <message>')
