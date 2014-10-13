@@ -146,7 +146,7 @@ gbm.check = function() {
 gbm.sync = function() {
   if (check.isBranch()) {
     var a = gitBranch.version()
-    gbm.ver(a)
+    gbm.parser(a)
   }
 }
 gbm._createBranch = function(version) {
