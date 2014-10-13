@@ -6,7 +6,7 @@ gbm
 
 [![NPM](https://nodei.co/npm/gbm.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/gbm/)
 
-Git branch manage to package.json version daily/x.y.z
+CLI Tool `gbm` Git branch manage to package.json version daily/x.y.z
 
 ## Install
 
@@ -16,7 +16,7 @@ $ npm install -g gbm
 ## Usage
 
 ```
-Usage: cli <commands> [options]
+Usage: gbm <commands> [options]
 
 Commands:
 
@@ -27,7 +27,7 @@ Commands:
      增加当前版本号
 
   parser|p <x.y.z>
-     更新当前版本号 adn commit
+     更新当前版本号 and commit
 
   commit|c <message>
      添加所有变更文件 and commit
@@ -52,7 +52,7 @@ Options:
 
   -h, --help     output usage information
   -V, --version  output the version number
-  -x, --major    主版本号增加
-  -y, --minor    次版本号增加 default
-  -z, --patch    补丁版本号增加
+  -M, --major    主版本号增加 Eg. 1.0.2 -> 2.0.0
+  -m, --minor    次版本号增加 default Eg. 1.0.2 -> 1.1.0
+  -p, --patch    补丁版本号增加 Eg. 1.0.2 -> 1.0.3
 ```

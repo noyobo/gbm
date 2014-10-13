@@ -1,7 +1,7 @@
 {
   "name": "gbm",
-  "version": "1.0.5",
-  "description": "Git branch manage quick new a branch when package.json version daily/x.y.z",
+  "version": "1.0.6",
+  "description": "CLI Tool `gbm` Git branch manage to package.json version daily/x.y.z",
   "bin": {
     "gbm": "cli.js"
   },
@@ -24,7 +24,8 @@
     "url": "https://github.com/noyobo/gbm.git"
   },
   "keywords": [
-    "git-branch"
+    "git-branch",
+    "bump"
   ],
   "author": "noyobo",
   "license": "MIT",

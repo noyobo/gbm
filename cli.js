@@ -17,9 +17,9 @@ function getType() {
 program
   .version(pkg.version)
   .usage(colors.yellow('<commands> [options]'))
-  .option('-x, --major', '主版本号增加')
-  .option('-y, --minor', '次版本号增加 default')
-  .option('-z, --patch', '补丁版本号增加')
+  .option('-M, --major', '主版本号增加 Eg. 1.0.2 -> 2.0.0')
+  .option('-m, --minor', '次版本号增加 '+'default'.yellow+' Eg. 1.0.2 -> 1.1.0')
+  .option('-p, --patch', '补丁版本号增加 Eg. 1.0.2 -> 1.0.3')
 
 program
   .command('new [x.y.z|options]')
