@@ -32,13 +32,13 @@ program
   .command('bump [options]')
   .alias('b')
   .description('增加当前版本号')
-  .action(function(val) {
+  .action(function() {
     gbm.bump(getType())
   })
 program
   .command('parser <x.y.z>')
   .alias('p')
-  .description('更新当前版本号 adn commit')
+  .description('更新当前版本号 and commit')
   .action(function(val) {
     gbm.parser(val || getType())
   })

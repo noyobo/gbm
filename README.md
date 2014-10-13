@@ -16,40 +16,43 @@ $ npm install -g gbm
 ## Usage
 
 ```
-  Usage: cli <commands> [options]
+Usage: cli <commands> [options]
 
-  Commands:
+Commands:
 
-    new|n [x.y.z|options]
-       创建新分支
+  new|n [x.y.z|options]
+     创建新分支
 
-    version|v <x.y.z>
-       修改当前版本号 and commit
+  bump|b [options]
+     增加当前版本号
 
-    commit|c <message>
-       添加所有变更文件 and commit
+  parser|p <x.y.z>
+     更新当前版本号 adn commit
 
-    switch|s <x.y.z>
-       切换分支到 daily/x.y.z
+  commit|c <message>
+     添加所有变更文件 and commit
 
-    prepub
-       推送当前分支到远端
+  switch|s <x.y.z>
+     切换分支到 daily/x.y.z
 
-    publish
-       发布当前分支资源
+  prepub
+     推送当前分支到远端
 
-    sync
-       同步当前版本号
+  publish
+     发布当前分支资源
 
-    now
-       显示当前文件配置信息
+  sync
+     同步当前版本号
+
+  now
+     显示当前文件配置信息
 
 
-  Options:
+Options:
 
-    -h, --help     output usage information
-    -V, --version  output the version number
-    -x, --major    主版本号增加
-    -y, --minor    次版本号增加 default
-    -z, --patch    补丁版本号增加
+  -h, --help     output usage information
+  -V, --version  output the version number
+  -x, --major    主版本号增加
+  -y, --minor    次版本号增加 default
+  -z, --patch    补丁版本号增加
 ```
