@@ -29,7 +29,7 @@ program
     gbm.new(val, getType())
   })
 program
-  .command('version [x.y.z|options]')
+  .command('version <x.y.z>')
   .alias('v')
   .description('更新当前版本号 adn commit')
   .action(function(val) {

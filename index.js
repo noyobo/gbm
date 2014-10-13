@@ -33,51 +33,64 @@ var commands = {
   publish: 'git push origin publish/$message:publish/$message'
 }
 
-
 gbm.new = function(version, release) {
-  if (version !== undefined) {
-    check.lint(version)
-    check.gt(version)
-    if (branchName === 'master') {
+  if (!check.isBranch()) {return false}
+  if (branchName === 'master') {
+    if (typeof version === 'undefined') {
       this._createBranch(ver.inc(pkg.version, release))
     } else {
-      this._createBranch(version)
+      if (check.isVer(version)) {
+        this._createBranch(version)
+      }
     }
   } else {
-    this._createBranch(ver.inc(branchNameVer, release))
+    if (typeof version === 'undefined') {
+      this._createBranch(ver.inc(branchNameVer, release))
+    } else {
+      if (check.isVer(version)) {
+        this._createBranch(version)
+      }
+    }
   }
-};
-// 更新版本号 并 commit
-gbm.ver = function(release) {
-  if (release === pkg.version) {
-    logger.info('当前 package.version 已为', release.green)
+}
+  // 更新版本号 并 commit
+gbm.ver = function(version) {
+  var flag = false
+  if (!check.isBranch()) {return false}
+  if (!check.isVer(version)) {return false}
+  if (version === pkg.version) {
+    logger.info('当前 package.version 已为', version.green)
     process.exit(1)
   }
-  if(branchName !== 'master') check.equi()
-  if (/\b(major|minor|patch)\b/.test(release)) {
-    check.checkVersion()
-    pkg.version = ver.inc(pkg.version, release)
-  } else {
-    check.lint(release)
-    check.gte(release)
-    pkg.version = release
+  if (branchName === 'master') {
+    if (check.gt(version)) {
+      pkg.version = version
+      flag = true
+    }
+  }else{
+    if (!check.equi(version) && check.gt(version)) {
+      pkg.version = version
+      flag = true
+    }
   }
+  if (!flag) {process.exit(1)}
   fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2))
   shjs.exec(commands.addpkg + '&&' + commands.commit.msg('v' + pkg.version), {
     silent: false,
     async: true
-    /*jshint unused:false*/
+      /*jshint unused:false*/
   }, function(code, output) {
-    if (code === 0 ) {
+    if (code === 0) {
       logger.info('package.version 更新到', pkg.version.green)
     }
   })
-};
+}
 // 推送分支
 gbm.prepub = function() {
-  check.checkVersion()
+  if (!check.isBranch()) {process.exit(1)}
+  if (!check.version) {process.exit(1)}
   logger.info('当前推送分支', branchName.green)
-  var n = branchName === 'master'? branchName : 'daily/' + branchNameVer
+  var n = branchName === 'master' ? branchName : 'daily/' + branchNameVer
   shjs.exec(commands.prepub.msg(n) + '&&' + commands.status, {
     silent: false,
     async: true
@@ -88,17 +101,17 @@ gbm.prepub = function() {
     }
   }).stdout.on('data', function(data) {
     if (nothingReg.test(data)) {
-      logger.log('Everything up-to-date')
+      logger.log('Everything up-to-date'.green)
     } else {
       logger.warn('分支剩余文件未提交')
     }
   })
-};
+}
 gbm.publish = function() {
-  check.checkVersion()
+  if (check.isMaster()) {process.exit(1)}
+  if (!check.isBranch()) {process.exit(1)}
+  if (!check.version) {process.exit(1)}
   var a = gitBranch.version()
-  console.log(a)
-  return false
   shjs.exec(commands.tag.msg(a) + '&&' + commands.publish.msg(a), {
     silent: false,
     async: true
@@ -112,7 +125,8 @@ gbm.publish = function() {
   })
 }
 gbm.commit = function(message) {
-  if(branchName !== 'master')check.checkVersion()
+  if (!check.isBranch()) {process.exit(1)}
+  if (!check.version) {process.exit(1)}
   message = message.replace(/[-_]+/g, ' ')
   shjs.exec(commands.add + '&&' + commands.commit.msg(message))
 }
@@ -121,18 +135,19 @@ gbm.switch = function(val) {
     shjs.exec(commands.switch.msg(val))
     process.exit()
   }
-  if (check.lint(val)) {
+  if (check.isVer(val)) {
     shjs.exec(commands.switch.msg('daily/' + val))
   }
 }
 gbm.check = function() {
-  check.checkVersion()
+  if (!check.isBranch()) {process.exit(1)}
   logger.info('now package.version:', pkg.version.green)
 }
 gbm.sync = function() {
-  check.name()
-  var a = gitBranch.version()
-  gbm.ver(a)
+  if (check.isBranch()) {
+    var a = gitBranch.version()
+    gbm.ver(a)
+  }
 }
 gbm._createBranch = function(version) {
   shjs.exec(commands.createBranch.msg(version), {

@@ -13,39 +13,37 @@ Git branch manage to package.json version daily/x.y.z
 ```
 $ npm install -g gbm
 ```
-
 ## Usage
 
-
 ```
-  Usage: gbm <commands> [options]
+  Usage: cli <commands> [options]
 
   Commands:
 
     new|n [x.y.z|options]
        创建新分支
-    
-    version|v [x.y.z|options]
-       更新当前版本号 adn commit
-    
+
+    version|v <x.y.z>
+       修改当前版本号 and commit
+
     commit|c <message>
        添加所有变更文件 and commit
-    
+
     switch|s <x.y.z>
        切换分支到 daily/x.y.z
-    
-    prepub 
+
+    prepub
        推送当前分支到远端
-    
-    publish 
+
+    publish
        发布当前分支资源
-    
-    sync 
+
+    sync
        同步当前版本号
-    
-    now 
+
+    now
        显示当前文件配置信息
-    
+
 
   Options:
 
