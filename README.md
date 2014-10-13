@@ -16,7 +16,7 @@ $ npm install -g gbm
 ## Usage
 
 ```
-Usage: cli <commands> [options]
+Usage: gbm <commands> [options]
 
 Commands:
 
