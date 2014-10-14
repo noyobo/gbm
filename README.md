@@ -56,3 +56,7 @@ Options:
   -m, --minor    次版本号增加 default Eg. 1.0.2 -> 1.1.0
   -p, --patch    补丁版本号增加 Eg. 1.0.2 -> 1.0.3
 ```
+## change log
+
+- v1.0.7
+ - 增加更新提示

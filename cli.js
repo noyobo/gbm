@@ -4,6 +4,7 @@
 var colors = require('colors')
 var program = require('commander')
 var pkg = require('./package.json')
+var updateNotifier = require('update-notifier')
 
 // var logger = require('./lib/log')
 // var help = require('./lib/help')
@@ -14,11 +15,17 @@ function getType() {
   return type;
 }
 
+var notifier = updateNotifier({
+  packageName: pkg.name,
+  packageVersion: pkg.version
+})
+notifier.notify()
+
 program
   .version(pkg.version)
   .usage(colors.yellow('<commands> [options]'))
   .option('-M, --major', '主版本号增加 Eg. 1.0.2 -> 2.0.0')
-  .option('-m, --minor', '次版本号增加 '+'default'.yellow+' Eg. 1.0.2 -> 1.1.0')
+  .option('-m, --minor', '次版本号增加 ' + 'default'.yellow + ' Eg. 1.0.2 -> 1.1.0')
   .option('-p, --patch', '补丁版本号增加 Eg. 1.0.2 -> 1.0.3')
 
 program
