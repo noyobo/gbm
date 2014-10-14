@@ -16,7 +16,7 @@
   },
   "engineStrict": true,
   "scripts": {
-    "test": "gulp lint && mocha",
+    "test": "gulp lint",
     "mocha": "mocha"
   },
   "repository": {

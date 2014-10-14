@@ -3,11 +3,11 @@
 'use strict';
 var colors = require('colors')
 var program = require('commander')
+var shjs = require('shelljs')
 var pkg = require('./package.json')
 var updateNotifier = require('update-notifier')
-
-// var logger = require('./lib/log')
-// var help = require('./lib/help')
+  // var logger = require('./lib/log')
+  // var help = require('./lib/help')
 var gbm = require('./index')
 
 function getType() {
@@ -21,6 +21,17 @@ var notifier = updateNotifier({
 })
 notifier.notify()
 
+
+function branch(cb) {
+  shjs.exec('git rev-parse --abbrev-ref HEAD', {
+    silent: true
+  }, function(code, out) {
+    if (code === 0) {
+      cb(out.trim())
+    }
+  })
+}
+
 program
   .version(pkg.version)
   .usage(colors.yellow('<commands> [options]'))
@@ -33,7 +44,9 @@ program
   .alias('n')
   .description('创建新分支')
   .action(function(val) {
-    gbm.new(val, getType())
+    branch(function(name) {
+      gbm.new(name, val || getType())
+    })
   })
 program
   .command('bump [options]')
@@ -47,14 +60,18 @@ program
   .alias('p')
   .description('更新当前版本号 and commit')
   .action(function(val) {
-    gbm.parser(val || getType())
+    branch(function(name) {
+      gbm.parser(name, val)
+    })
   })
 program
   .command('commit <message>')
   .alias('c')
   .description('添加所有变更文件 and commit')
-  .action(function(val) {
-    gbm.commit(val)
+  .action(function(message) {
+    branch(function(name) {
+      gbm.commit(name,message)
+    })
   })
 program
   .command('switch <x.y.z>')
@@ -67,26 +84,34 @@ program
   .command('prepub')
   .description('推送当前分支到远端')
   .action(function() {
-    gbm.prepub()
+    branch(function(name) {
+      gbm.prepub(name)
+    })
   })
 program
   .command('publish')
   .description('发布当前分支资源')
   .action(function() {
-    gbm.publish()
+    branch(function(name) {
+      gbm.publish(name)
+    })
   })
 
 program
   .command('sync')
   .description('同步当前版本号')
   .action(function() {
-    gbm.sync()
+    branch(function(name) {
+      gbm.sync(name)
+    })
   })
 program
   .command('now')
   .description('显示当前文件配置信息')
   .action(function() {
-    gbm.check()
+    branch(function(name) {
+      gbm.now(name)
+    })
   })
 program.parse(process.argv)
 
