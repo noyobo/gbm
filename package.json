@@ -1,6 +1,6 @@
 {
   "name": "gbm",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "CLI Tool `gbm` Git branch manage to package.json version daily/x.y.z",
   "bin": {
     "gbm": "cli.js"
@@ -16,7 +16,7 @@
   },
   "engineStrict": true,
   "scripts": {
-    "test": "gulp lint && mocha",
+    "test": "gulp lint",
     "mocha": "mocha"
   },
   "repository": {
@@ -36,6 +36,7 @@
   "dependencies": {
     "colors": "^1.0.3",
     "commander": "^2.3.0",
+    "confirm-simple": "^1.0.0",
     "dateformat": "^1.0.8",
     "semver": "^4.0.3",
     "shelljs": "^0.3.0",
