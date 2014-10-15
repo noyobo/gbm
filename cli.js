@@ -4,6 +4,7 @@
 var colors = require('colors');
 var program = require('commander');
 var shjs = require('shelljs');
+var confirm = require('confirm-simple');
 var pkg = require('./package.json');
 var updateNotifier = require('update-notifier');
 // var logger = require('./lib/log')
@@ -102,8 +103,12 @@ program
   .command('publish')
   .description('发布当前分支资源')
   .action(function() {
-    branch(function(name) {
-      gbm.publish(name);
+    confirm('你确定发布当前分支吗? 此操作不可逆!', ['yes', 'no'], function(ok) {
+      if (ok) {
+        branch(function(name) {
+          gbm.publish(name);
+        });
+      }
     });
   });
 

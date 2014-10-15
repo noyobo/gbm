@@ -126,6 +126,7 @@ gbm.publish = function(name) {
     return false;
   }
   var v = /daily\/(\S+)/.exec(name)[1];
+  logger.info('当前推送Tag =>', ('publish/' + v).green);
   shjs.exec(commands.tag.msg(v) + '&&' + commands.publish.msg(v), {
     silent: false,
     async: true
