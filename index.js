@@ -63,7 +63,7 @@ gbm.commit = function(name, message) {
   if (!check.isBranch(name)) {
     return false;
   }
-  if (!check.version(name, pkg.version)) {
+  if (!check.neq(name, pkg.version)) {
     return false;
   }
   message = message.replace(/[-_]+/g, ' ');
@@ -94,7 +94,7 @@ gbm.prepub = function(name) {
   if (!check.isBranch(name)) {
     return false;
   }
-  if (!check.version(name, pkg.version)) {
+  if (!check.neq(name, pkg.version)) {
     return false;
   }
   logger.info('当前推送分支', name.green);
@@ -122,7 +122,7 @@ gbm.publish = function(name) {
   if (!check.isBranch(name)) {
     return false;
   }
-  if (!check.version(name, pkg.version)) {
+  if (!check.neq(name, pkg.version)) {
     return false;
   }
   var v = /daily\/(\S+)/.exec(name)[1];
