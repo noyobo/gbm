@@ -39,6 +39,8 @@ program
   .option('-m, --minor', '次版本号增加 ' + 'default'.yellow + ' Eg. 1.0.2 -> 1.1.0')
   .option('-p, --patch', '补丁版本号增加 Eg. 1.0.2 -> 1.0.3');
 
+program.name = 'gbm';
+
 program
   .command('new [x.y.z|options]')
   .alias('n')
@@ -73,7 +75,7 @@ program
   });
 program
   .command('set <x.y.z>')
-  .description('设置当前版本号 and commit')
+  .description('设置当前版本号')
   .action(function(val) {
     branch(function(name) {
       gbm.parser(name, val);
