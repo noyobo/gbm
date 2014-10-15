@@ -70,10 +70,14 @@ gbm.commit = function(name, message) {
   shjs.exec(commands.add + '&&' + commands.commit.msg(message));
 };
 gbm.sync = function(name) {
-  var v = /daily\/(\S+)/.exec(name)[1];
-  this._writePackage(v, function() {
-    logger.info('package.version =>', v.green);
-  });
+  if (check.isDaily(name)) {
+    var v = /daily\/(\S+)/.exec(name)[1];
+    this._writePackage(v, function() {
+      logger.info('package.version =>', v.green);
+    });
+  }else{
+    logger.warn('当前分支不为', 'daily/x.y.z'.magenta);
+  };
 };
 gbm.switch = function(val) {
   if (val === 'master') {
