@@ -31,7 +31,7 @@ var commands = {
 
 gbm.new = function(name, val) {
   if (!check.isBranch(name)) {
-    process.exit();
+    return false;
   }
   if (check.isVersion(val)) {
     this._createBranch(val);
@@ -61,10 +61,10 @@ gbm.parser = function(name, v) {
 };
 gbm.commit = function(name, message) {
   if (!check.isBranch(name)) {
-    process.exit();
+    return false;
   }
   if (!check.version(name, pkg.version)) {
-    process.exit();
+    return false;
   }
   message = message.replace(/[-_]+/g, ' ');
   shjs.exec(commands.add + '&&' + commands.commit.msg(message));
@@ -78,7 +78,7 @@ gbm.sync = function(name) {
 gbm.switch = function(val) {
   if (val === 'master') {
     shjs.exec(commands.switch.msg(val));
-    process.exit();
+    return false;
   }
   if (check.isVer(val)) {
     shjs.exec(commands.switch.msg('daily/' + val));
@@ -86,16 +86,16 @@ gbm.switch = function(val) {
 };
 gbm.now = function(name) {
   if (!check.isBranch(name)) {
-    process.exit();
+    return false;
   }
   logger.info('now package.version:', pkg.version.green);
 };
 gbm.prepub = function(name) {
   if (!check.isBranch(name)) {
-    process.exit();
+    return false;
   }
   if (!check.version(name, pkg.version)) {
-    process.exit();
+    return false;
   }
   logger.info('当前推送分支', name.green);
   shjs.exec(commands.prepub.msg(name) + '&&' + commands.status, {
@@ -117,13 +117,13 @@ gbm.prepub = function(name) {
 gbm.publish = function(name) {
   if (check.isMaster(name)) {
     logger.warn('当前分支为', 'master'.green, '禁止 publish');
-    process.exit();
+    return false;
   }
   if (!check.isBranch(name)) {
-    process.exit();
+    return false;
   }
   if (!check.version(name, pkg.version)) {
-    process.exit();
+    return false;
   }
   var v = /daily\/(\S+)/.exec(name)[1];
   shjs.exec(commands.tag.msg(v) + '&&' + commands.publish.msg(v), {
