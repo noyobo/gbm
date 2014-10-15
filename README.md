@@ -59,9 +59,9 @@ $ npm install -g gbm
 ## change log
 
 - v1.0.0
-  - command 'parse' changed 'set'
-  - command 'now' changed 'get'
-  - add 'push' alias 'prepub'
+  - command `parse` changed `set`
+  - command `now` changed `get`
+  - add `push` alias `prepub`
   - `publish` need confirm
 
 - v1.0.7
