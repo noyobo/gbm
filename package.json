@@ -1,14 +1,16 @@
 {
   "name": "gbm",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "CLI Tool `gbm` Git branch manage to package.json version daily/x.y.z",
+  "main": "index.js",
   "bin": {
     "gbm": "cli.js"
   },
   "files": [
-    "cli.js"
+    "cli.js",
+    "index.js",
+    "lib/*"
   ],
-  "main": "index.js",
   "preferGlobal": true,
   "engines": {
     "node": ">=0.10.0",

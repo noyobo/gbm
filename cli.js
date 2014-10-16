@@ -7,7 +7,7 @@ var shjs = require('shelljs');
 var confirm = require('confirm-simple');
 var pkg = require('./package.json');
 var update = require('update-npm');
-var gbm = require('./index');
+var gbm = require('./index.js');
 
 function getType() {
   var type = (!!program.major && 'major') || (!!program.minor && 'minor') || (!!program.patch && 'patch') || 'minor';
