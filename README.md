@@ -46,7 +46,9 @@ $ npm install -g gbm
     
     sync 
        同步当前版本号
-    
+
+    up|upgrade
+       检查 `gbm` 更新
 
   Options:
 
@@ -57,6 +59,9 @@ $ npm install -g gbm
     -p, --patch    补丁版本号增加 Eg. 1.0.2 -> 1.0.3
 ```
 ## change log
+
+- v1.0.1
+  - add command `upgrade`
 
 - v1.0.0
   - command `parse` changed `set`

@@ -77,7 +77,7 @@ gbm.sync = function(name) {
     });
   }else{
     logger.warn('当前分支不为', 'daily/x.y.z'.magenta);
-  };
+  }
 };
 gbm.switch = function(val) {
   if (val === 'master') {

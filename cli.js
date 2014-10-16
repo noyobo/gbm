@@ -6,22 +6,13 @@ var program = require('commander');
 var shjs = require('shelljs');
 var confirm = require('confirm-simple');
 var pkg = require('./package.json');
-var updateNotifier = require('update-notifier');
-// var logger = require('./lib/log')
-// var help = require('./lib/help')
+var update = require('update-npm');
 var gbm = require('./index');
 
 function getType() {
   var type = (!!program.major && 'major') || (!!program.minor && 'minor') || (!!program.patch && 'patch') || 'minor';
   return type;
 }
-
-var notifier = updateNotifier({
-  packageName: pkg.name,
-  packageVersion: pkg.version
-});
-notifier.notify();
-
 
 function branch(cb) {
   shjs.exec('git rev-parse --abbrev-ref HEAD', {
@@ -32,6 +23,8 @@ function branch(cb) {
     }
   });
 }
+
+update.notify(pkg.name, pkg.version);
 
 program
   .version(pkg.version)
@@ -111,7 +104,6 @@ program
       }
     });
   });
-
 program
   .command('sync')
   .description('同步当前版本号')
@@ -120,6 +112,14 @@ program
       gbm.sync(name);
     });
   });
+program
+  .command('up')
+  .alias('upgrade')
+  .description('检查 gbm 更新')
+  .action(function() {
+    update.upgrade(pkg.name, pkg.version);
+  });
+
 program.parse(process.argv);
 
 if (program.args.length === 0) {
