@@ -93,6 +93,14 @@ program
     });
   });
 program
+  .command('pull')
+  .description('拉取当前分支到远端')
+  .action(function() {
+    branch(function(name) {
+      gbm.pull(name);
+    });
+  });
+program
   .command('publish')
   .description('发布当前分支资源')
   .action(function() {

@@ -26,6 +26,7 @@ var commands = {
   tag: 'git tag publish/$message',
   nowbranch: 'git rev-parse --abbrev-ref HEAD',
   prepub: 'git push origin $message:$message',
+  pull: 'git pull origin $message:$message',
   publish: 'git push origin publish/$message:publish/$message'
 };
 
@@ -118,6 +119,26 @@ gbm.prepub = function(name) {
     }
   });
 };
+gbm.pull = function(name){
+  if (!check.isBranch(name)) {
+    return false;
+  }
+  if (!check.neq(name, pkg.version)) {
+    return false;
+  }
+  logger.info('当前拉取分支', name.green);
+  shjs.exec(commands.pull.msg(name) + '&&' + commands.status, {
+    silent: false,
+    async: true
+      /*jshint unused:false*/
+  }, function(code, output) {
+    if (code !== 0) {
+      logger.error('拉取失败');
+    }else{
+      logger.info('拉取成功');
+    }
+  })
+}
 gbm.publish = function(name) {
   if (check.isMaster(name)) {
     logger.warn('当前分支为', 'master'.green, '禁止 publish');

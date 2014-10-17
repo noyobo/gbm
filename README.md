@@ -33,7 +33,7 @@ $ npm install -g gbm
        切换分支到 daily/x.y.z
     
     set <x.y.z>
-       设置当前版本号 and commit
+       设置当前版本号
     
     get 
        获取当前版本号
@@ -41,14 +41,18 @@ $ npm install -g gbm
     push|prepub 
        推送当前分支到远端
     
+    pull 
+       拉取当前分支到远端
+    
     publish 
        发布当前分支资源
     
     sync 
        同步当前版本号
-
-    up|upgrade
-       检查 `gbm` 更新
+    
+    up|upgrade 
+       检查 gbm 更新
+    
 
   Options:
 
