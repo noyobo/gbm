@@ -38,7 +38,8 @@ gbm.new = function(name, val) {
     this._createBranch(val);
   }
   if (check.isBump(val)) {
-    var v = /daily\/(\S+)/.exec(name)[1] || pkg.version;
+    var m = /daily\/(\S+)/.exec(name)
+    var v = (m && m[1]) || pkg.version;
     this._createBranch(ver.inc(v, val));
   }
 };
@@ -150,7 +151,8 @@ gbm.publish = function(name) {
   if (!check.neq(name, pkg.version)) {
     return false;
   }
-  var v = /daily\/(\S+)/.exec(name)[1];
+  var m = /daily\/(\S+)/.exec(name)
+  var v = m && [1];
   logger.info('当前推送Tag =>', ('publish/' + v).green);
   shjs.exec(commands.tag.msg(v) + '&&' + commands.publish.msg(v), {
     silent: false,
