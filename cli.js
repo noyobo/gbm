@@ -94,7 +94,7 @@ program
   });
 program
   .command('pull')
-  .description('拉取当前分支到远端')
+  .description('拉取当前分支到')
   .action(function() {
     branch(function(name) {
       gbm.pull(name);

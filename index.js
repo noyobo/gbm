@@ -5,7 +5,6 @@ var ver = require('semver');
 var fs = require('fs');
 
 var pkgPath = path.join(process.cwd(), 'package.json');
-var pkg = require(pkgPath);
 var logger = require('./lib/log');
 var check = require('./lib/check-branch');
 var gbm = module.exports = {};
@@ -14,6 +13,10 @@ String.prototype.msg = function(msg) {
   return this.replace(/\$message/g, msg);
 };
 var nothingReg = /nothing to commit/gm;
+var pkg = gbm.pkg = null;
+if (fs.existsSync(pkgPath)) {
+  pkg = gbm.pkg = require(pkgPath);
+}
 
 var commands = {
   add: 'git add -A',
@@ -31,6 +34,7 @@ var commands = {
 };
 
 gbm.new = function(name, val) {
+  this._checkPackage()
   if (!check.isBranch(name)) {
     return false;
   }
@@ -44,6 +48,7 @@ gbm.new = function(name, val) {
   }
 };
 gbm.bump = function(type) {
+  this._checkPackage()
   var v = pkg.version;
   if (check.isVersion(v)) {
     v = ver.inc(v, type);
@@ -55,6 +60,7 @@ gbm.bump = function(type) {
   }
 };
 gbm.parser = function(name, v) {
+  this._checkPackage()
   if (check.isBranch(name) && check.isVer(v) && check.gte(v, pkg.version)) {
     this._writePackage(v, function() {
       logger.info('package.version =>', v.green);
@@ -62,6 +68,7 @@ gbm.parser = function(name, v) {
   }
 };
 gbm.commit = function(name, message) {
+  this._checkPackage()
   if (!check.isBranch(name)) {
     return false;
   }
@@ -72,16 +79,18 @@ gbm.commit = function(name, message) {
   shjs.exec(commands.add + '&&' + commands.commit.msg(message));
 };
 gbm.sync = function(name) {
+  this._checkPackage()
   if (check.isDaily(name)) {
     var v = /daily\/(\S+)/.exec(name)[1];
     this._writePackage(v, function() {
       logger.info('package.version =>', v.green);
     });
-  }else{
+  } else {
     logger.warn('当前分支不为', 'daily/x.y.z'.magenta);
   }
 };
 gbm.switch = function(val) {
+  this._checkPackage()
   if (val === 'master') {
     shjs.exec(commands.switch.msg(val));
     return false;
@@ -91,12 +100,14 @@ gbm.switch = function(val) {
   }
 };
 gbm.now = function(name) {
+  this._checkPackage()
   if (!check.isBranch(name)) {
     return false;
   }
   logger.info('now package.version:', pkg.version.green);
 };
 gbm.prepub = function(name) {
+  this._checkPackage()
   if (!check.isBranch(name)) {
     return false;
   }
@@ -120,7 +131,8 @@ gbm.prepub = function(name) {
     }
   });
 };
-gbm.pull = function(name){
+gbm.pull = function(name) {
+  this._checkPackage()
   if (!check.isBranch(name)) {
     return false;
   }
@@ -135,12 +147,13 @@ gbm.pull = function(name){
   }, function(code, output) {
     if (code !== 0) {
       logger.error('拉取失败');
-    }else{
+    } else {
       logger.info('拉取成功');
     }
   })
 }
 gbm.publish = function(name) {
+  this._checkPackage()
   if (check.isMaster(name)) {
     logger.warn('当前分支为', 'master'.green, '禁止 publish');
     return false;
@@ -201,3 +214,10 @@ gbm._writePackage = function(v, cb) {
     cb();
   });
 };
+
+gbm._checkPackage = function(){
+  if (!this.pkg) {
+    logger.info(process.cwd(), '不存在 package.json')
+    process.exit(1)
+  };
+}
