@@ -42,7 +42,7 @@ $ npm install -g gbm
        推送当前分支到远端
     
     pull 
-       拉取当前分支到远端
+       拉取当前分支
     
     publish 
        发布当前分支资源
