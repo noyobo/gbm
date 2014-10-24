@@ -42,7 +42,7 @@ gbm.new = function(name, val) {
     this._createBranch(val);
   }
   if (check.isBump(val)) {
-    var m = /daily\/(\S+)/.exec(name)
+    var m = /^daily\/(\d+\.\d+\.\d+)$/.exec(name)
     var v = (m && m[1]) || pkg.version;
     this._createBranch(ver.inc(v, val));
   }
@@ -81,7 +81,7 @@ gbm.commit = function(name, message) {
 gbm.sync = function(name) {
   this._checkPackage()
   if (check.isDaily(name)) {
-    var v = /daily\/(\S+)/.exec(name)[1];
+    var v = /^daily\/(\d+\.\d+\.\d+)$/.exec(name)[1];
     this._writePackage(v, function() {
       logger.info('package.version =>', v.green);
     });
@@ -164,8 +164,14 @@ gbm.publish = function(name) {
   if (!check.neq(name, pkg.version)) {
     return false;
   }
-  var m = /daily\/(\S+)/.exec(name)
-  var v = m && [1];
+  console.log(name)
+  var m = /^daily\/(\d+\.\d+\.\d+)$/.exec(name)
+  if (m) {
+    var v = m && m[1];
+  } else {
+    logger.error('版本号错误...');
+    return false;
+  };
   logger.info('当前推送Tag =>', ('publish/' + v).green);
   shjs.exec(commands.tag.msg(v) + '&&' + commands.publish.msg(v), {
     silent: false,
@@ -215,7 +221,7 @@ gbm._writePackage = function(v, cb) {
   });
 };
 
-gbm._checkPackage = function(){
+gbm._checkPackage = function() {
   if (!this.pkg) {
     logger.info(process.cwd(), '不存在 package.json')
     process.exit(1)
