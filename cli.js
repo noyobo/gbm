@@ -1,4 +1,4 @@
-#! /usr/bin/env node
+#!/usr/bin/env node
 'use strict';
 var colors = require('colors');
 var program = require('commander');
