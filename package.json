@@ -1,6 +1,6 @@
 {
   "name": "gbm",
-  "version": "1.1.9",
+  "version": "1.1.10",
   "description": "CLI Tool `gbm` Git branch manage to package.json version daily/x.y.z",
   "main": "index.js",
   "bin": {
@@ -41,14 +41,14 @@
     "confirm-simple": "^1.0.3",
     "dateformat": "^1.0.11",
     "semver": "^4.3.6",
-    "shelljs": "^0.3.0",
-    "update-notifier": "^0.2.2",
-    "update-npm": "0.0.0"
+    "shelljs": "^0.5.1",
+    "update-notifier": "^0.5.0",
+    "update-npm": "0.0.2"
   },
   "devDependencies": {
-    "gulp": "^3.8.8",
-    "gulp-jshint": "^1.8.5",
-    "jshint-stylish": "^1.0.0",
-    "mocha": "^1.21.5"
+    "gulp": "^3.9.0",
+    "gulp-jshint": "^1.11.0",
+    "jshint-stylish": "^2.0.1",
+    "mocha": "^2.2.5"
   }
 }
