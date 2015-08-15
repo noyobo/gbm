@@ -166,12 +166,13 @@ gbm.publish = function(name) {
   }
   console.log(name)
   var m = /^daily\/(\d+\.\d+\.\d+)$/.exec(name)
+  var v;
   if (m) {
-    var v = m && m[1];
+    v = m && m[1];
   } else {
     logger.error('版本号错误...');
     return false;
-  };
+  }
   logger.info('当前推送Tag =>', ('publish/' + v).green);
   shjs.exec(commands.tag.msg(v) + '&&' + commands.publish.msg(v), {
     silent: false,
@@ -225,5 +226,5 @@ gbm._checkPackage = function() {
   if (!this.pkg) {
     logger.info(process.cwd(), '不存在 package.json')
     process.exit(1)
-  };
+  }
 }

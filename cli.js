@@ -1,11 +1,12 @@
 #!/usr/bin/env node
+
 'use strict';
 var colors = require('colors');
 var program = require('commander');
 var shjs = require('shelljs');
 var confirm = require('confirm-simple');
 var pkg = require('./package.json');
-var update = require('update-npm');
+var updateNotifier = require('update-notifier');
 var gbm = require('./index.js');
 
 function getType() {
@@ -23,7 +24,10 @@ function branch(cb) {
   });
 }
 
-update.notify(pkg.name, pkg.version);
+updateNotifier({
+  pkg: pkg,
+  updateCheckInterval: 60 * 60 * 1000 * 24
+}).notify()
 
 program
   .version(pkg.version)
@@ -118,13 +122,6 @@ program
     branch(function(name) {
       gbm.sync(name);
     });
-  });
-program
-  .command('up')
-  .alias('upgrade')
-  .description('检查 gbm 更新')
-  .action(function() {
-    update.upgrade(pkg.name, pkg.version);
   });
 
 program.parse(process.argv);
