@@ -1,5 +1,7 @@
 gbm
 ===
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/noyobo/gbm.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/noyobo/gbm.svg)](https://travis-ci.org/noyobo/gbm)
 [![npm version](http://img.shields.io/npm/v/gbm.svg)](https://www.npmjs.org/package/gbm)
 [![npm download](http://img.shields.io/npm/dm/gbm.svg)](https://www.npmjs.org/package/gbm)
