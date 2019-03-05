@@ -175,7 +175,7 @@ gbm.publish = function(name) {
     return false;
   }
   console.log(name);
-  var m = /^daily\/(\d+\.\d+\.\d+)$/.exec(name);
+  var m = /^[a-z][-_a-z0-9]*\/(\d+\.\d+\.\d+)$/i.exec(name);
   var v;
   if (m) {
     v = m && m[1];
