@@ -1,6 +1,6 @@
 {
   "name": "gbm",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "CLI Tool `gbm` Git branch manage to package.json version daily/x.y.z",
   "main": "index.js",
   "bin": {
